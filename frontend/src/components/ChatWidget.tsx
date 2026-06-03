@@ -6,6 +6,7 @@ import ChatHeader from "./chat/ChatHeader";
 import MessageList from "./chat/MessageList";
 
 const SESSION_STORAGE_KEY = "shopspur_session_id";
+const MAX_MESSAGE_CHARACTERS = 200;
 
 export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -47,6 +48,18 @@ export default function ChatWidget() {
     const trimmedInput = inputValue.trim();
 
     if (!trimmedInput || isLoading) {
+      return;
+    }
+
+    if (trimmedInput.length > MAX_MESSAGE_CHARACTERS) {
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        {
+          sender: "ai",
+          text: "Your message is too long. Please shorten it and try again.",
+          isError: true,
+        },
+      ]);
       return;
     }
 
@@ -92,7 +105,10 @@ export default function ChatWidget() {
         <ChatComposer
           inputValue={inputValue}
           isLoading={isLoading}
-          onInputChange={setInputValue}
+          maxLength={MAX_MESSAGE_CHARACTERS}
+          onInputChange={(value) =>
+            setInputValue(value.slice(0, MAX_MESSAGE_CHARACTERS))
+          }
           onSend={() => void handleSend()}
         />
       </section>

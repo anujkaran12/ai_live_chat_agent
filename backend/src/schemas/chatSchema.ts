@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MAX_MESSAGE_CHARACTERS = 10000;
+export const MAX_MESSAGE_CHARACTERS = 200;
 
 export const chatRequestSchema = z.object({
   message: z
