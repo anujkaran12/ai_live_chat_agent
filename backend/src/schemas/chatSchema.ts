@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-export const MAX_MESSAGE_CHARACTERS = 2000;
-export const MAX_REQUEST_MESSAGE_CHARACTERS = 10000;
+export const MAX_MESSAGE_CHARACTERS = 10000;
 
 export const chatRequestSchema = z.object({
   message: z
@@ -11,16 +10,25 @@ export const chatRequestSchema = z.object({
     .trim()
     .min(1, "Message cannot be empty")
     .max(
-      MAX_REQUEST_MESSAGE_CHARACTERS,
-      `Message is too large. Please keep it under ${MAX_REQUEST_MESSAGE_CHARACTERS} characters`,
+      MAX_MESSAGE_CHARACTERS,
+      "Your message is too long. Please shorten it and try again.",
     ),
   sessionId: z
     .string({
-      error: "Session id must be a string",
+      error: "We could not continue this chat. Please start a new message.",
     })
     .trim()
-    .uuid("Session id must be a valid UUID")
+    .uuid("We could not continue this chat. Please start a new message.")
     .optional(),
+});
+
+export const chatHistoryParamsSchema = z.object({
+  sessionId: z
+    .string({
+      error: "We could not load this chat. Please start a new message.",
+    })
+    .trim()
+    .uuid("We could not load this chat. Please start a new message."),
 });
 
 export type ChatRequestBody = z.infer<typeof chatRequestSchema>;

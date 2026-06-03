@@ -16,24 +16,24 @@ export function sendChatError(res: Response, error: unknown): void {
   const message = error instanceof Error ? error.message : String(error);
 
   if (message === "RATE_LIMIT") {
-    errorResponse(res, 429, "Too many requests, please wait a moment");
+    errorResponse(res, 429, "You have sent a few messages quickly. Please wait a moment and try again.");
     return;
   }
 
   if (message === "INVALID_KEY") {
-    errorResponse(res, 503, "AI service configuration error");
+    errorResponse(res, 503, "Chat support is not available right now. Please try again later.");
     return;
   }
 
   if (message === "AI_NOT_READY") {
-    errorResponse(res, 503, "AI service is still starting. Please try again in a moment");
+    errorResponse(res, 503, "Chat support is getting ready. Please try again in a moment.");
     return;
   }
 
   if (message === "LLM_ERROR") {
-    errorResponse(res, 502, "AI service is unavailable right now. Please try again");
+    errorResponse(res, 502, "Chat support is having trouble replying right now. Please try again.");
     return;
   }
 
-  errorResponse(res, 500, "Something went wrong, please try again");
+  errorResponse(res, 500, "Something went wrong while sending your message. Please try again.");
 }

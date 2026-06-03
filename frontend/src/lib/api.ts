@@ -41,17 +41,17 @@ export function getErrorMessage(error: unknown): string {
     }
 
     if (!error.response) {
-      return "Network error. Please check if the backend server is running.";
+      return "We could not send your message right now. Please try again in a moment.";
     }
 
-    return error.message;
+    return "Something went wrong while sending your message. Please try again.";
   }
 
   if (error instanceof Error) {
-    return error.message;
+    return "Something went wrong while sending your message. Please try again.";
   }
 
-  return String(error);
+  return "Something went wrong while sending your message. Please try again.";
 }
 
 export async function sendMessage(

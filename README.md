@@ -30,13 +30,15 @@ Open http://localhost:5173.
 
 `PORT` is the backend HTTP server port. It defaults to `3001`.
 
+`FRONTEND_URL` is the frontend origin allowed by CORS. It defaults to `http://localhost:5173`.
+
 ## Architecture
 
 The backend is split into four layers. Routes handle HTTP concerns and validation only. Services contain the business logic for chat sessions and AI replies. Repositories own database reads and writes. `llmService` manages the Gemini model and is initialized once at startup.
 
 ## LLM Notes
 
-Gemini 1.5 Flash is used. The model and system prompt are initialized once when the server starts by reading store knowledge from the database. Conversation history is capped at the last 10 messages. Max tokens is 1000.
+Gemini 2.5 Flash is used. The model and system prompt are initialized once when the server starts by reading store knowledge from the database. Conversation history is capped at the last 10 messages. Max tokens is 1000.
 
 ## Trade-offs
 

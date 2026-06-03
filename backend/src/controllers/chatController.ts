@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { findMessagesByConversationId } from "../repositories/messageRepository";
-import { chatRequestSchema } from "../schemas/chatSchema";
+import { chatHistoryParamsSchema, chatRequestSchema } from "../schemas/chatSchema";
 import { handleMessage } from "../services/chatService";
-import { errorResponse, successResponse } from "../utils/apiResponses";
+import { successResponse } from "../utils/apiResponses";
 import { sendChatError } from "../utils/chatErrors";
 
 export async function sendMessage(
@@ -24,10 +24,11 @@ export async function getHistory(
   res: Response,
 ): Promise<void> {
   try {
-    const messages = await findMessagesByConversationId(req.params.sessionId);
+    const parsed = chatHistoryParamsSchema.parse(req.params);
+    const messages = await findMessagesByConversationId(parsed.sessionId);
 
     successResponse(res, 200, "Chat history fetched successfully", messages);
-  } catch {
-    errorResponse(res, 500, "Could not load chat history. Please try again");
+  } catch (error) {
+    sendChatError(res, error);
   }
 }

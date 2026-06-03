@@ -27,18 +27,18 @@ app.use("/chat", chatRouter);
 
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (isPayloadTooLargeError(error)) {
-    errorResponse(res, 413, "Request body is too large");
+    errorResponse(res, 413, "Your message is too large. Please shorten it and try again.");
     return;
   }
 
   if (isJsonParseError(error)) {
-    errorResponse(res, 400, "Invalid JSON request body");
+    errorResponse(res, 400, "We could not understand that request. Please try again.");
     return;
   }
 
   const status = getHttpErrorStatus(error);
 
-  errorResponse(res, status, "Something went wrong, please try again");
+  errorResponse(res, status, "Something went wrong while sending your message. Please try again.");
 });
 
 async function startServer(): Promise<void> {

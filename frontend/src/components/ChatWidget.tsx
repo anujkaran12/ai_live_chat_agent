@@ -15,14 +15,15 @@ export default function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const storedSessionId = localStorage.getItem(SESSION_STORAGE_KEY);
+    async function loadStoredChat(): Promise<void> {
+      const storedSessionId = localStorage.getItem(SESSION_STORAGE_KEY);
 
-    if (!storedSessionId) {
-      return;
-    }
+      if (!storedSessionId) {
+        return;
+      }
 
-    fetchHistory(storedSessionId)
-      .then((history) => {
+      try {
+        const history = await fetchHistory(storedSessionId);
         setMessages(
           history.map((message) => ({
             sender: message.sender,
@@ -30,10 +31,12 @@ export default function ChatWidget() {
           })),
         );
         setSessionId(storedSessionId);
-      })
-      .catch(() => {
+      } catch {
         localStorage.removeItem(SESSION_STORAGE_KEY);
-      });
+      }
+    }
+
+    void loadStoredChat();
   }, []);
 
   useEffect(() => {
