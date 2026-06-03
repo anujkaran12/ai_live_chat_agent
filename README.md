@@ -38,7 +38,7 @@ The backend is split into four layers. Routes handle HTTP concerns and validatio
 
 ## LLM Notes
 
-Gemini 2.5 Flash is used. The model and system prompt are initialized once when the server starts by reading store knowledge from the database. Conversation history is capped at the last 10 messages. Max tokens is 1000.
+Gemini 2.5 Flash is used. The model and system prompt are initialized once when the server starts by reading realistic ShopSpur policy knowledge from the database. Conversation history is capped at the last 10 messages. Max tokens is 1000. If you update the seed knowledge, rerun `npm run seed` and restart the backend.
 
 ## Trade-offs
 
